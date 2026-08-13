@@ -1,59 +1,86 @@
-const button8 =
-    document.getElementById("button8");
-
-const animation =
-    document.getElementById("animation");
-
-const points =
-    document.getElementById("points");
+const button8 = document.getElementById("button8");
+const animation = document.getElementById("animation");
+const points = document.getElementById("points");
 
 
-// ============================================
-// MATRIZ DEL SÍMBOLO
-// ============================================
-//
-// R = 🔴
-// W = ⚪
-// B = ⚫
-//
-// 19 columnas x 11 filas
-//
+/*
+==================================================
+FIGURA EXACTA
+==================================================
+
+19 COLUMNAS
+13 FILAS
+
+R = ROJO
+W = BLANCO
+B = NEGRO
+
+Cada fila tiene EXACTAMENTE 19 posiciones.
+==================================================
+*/
 
 const pattern = [
 
     "RRRRRRRRRRRRRRRRRRR",
 
-    "RRRRRWWWWWWWRRRRRRR",
+    "RRRRRRRWWWWWRRRRRRR",
 
-    "RRRRWWWWWWWWWRRRRRR",
+    "RRRRRWWWWBWWWWRRRRR",
 
-    "RRRRWWBWWBWWWRRRRRR",
+    "RRRRRWWWBWWWWWRRRRR",
 
-    "RRRRWWWWBWWWWRRRRRR",
+    "RRRRWWWBWWWWBWWWRRR",
 
-    "RRRRWWBWBWBWWRRRRRR",
+    "RRRRWWWWBWBWBWWRRRR",
 
-    "RRRRWWWWBWWWWRRRRRR",
+    "RRRRWWBWWWBWWWBWRRR",
 
-    "RRRRWWBWWBWWWRRRRRR",
+    "RRRRWWWBWBWBWWWWRRR",
 
-    "RRRRWWWWWWWWWRRRRRR",
+    "RRRRWWWWBWWBWWWRRR",
 
-    "RRRRRWWWWWWWRRRRRRR",
+    "RRRRRWWWWWBWWWRRRR",
+
+    "RRRRRWWWWBWWWWRRRR",
+
+    "RRRRRRRWWWWWRRRRRRR",
 
     "RRRRRRRRRRRRRRRRRRR"
 
 ];
 
 
-// ============================================
-// CREAR PUNTOS
-// ============================================
+/*
+==================================================
+COMPROBAR MATRIZ
+==================================================
+*/
+
+pattern.forEach((row, index) => {
+
+    if (row.length !== 19) {
+
+        console.error(
+            `ERROR: fila ${index + 1} tiene ${row.length} columnas`
+        );
+
+    }
+
+});
+
+
+/*
+==================================================
+CREAR LOS 247 PUNTOS
+==================================================
+*/
 
 function createPoints() {
 
     points.innerHTML = "";
 
+    const centerX = 9;
+    const centerY = 6;
 
     pattern.forEach((row, y) => {
 
@@ -63,101 +90,101 @@ function createPoints() {
                 document.createElement("div");
 
 
-            point.classList.add(
-                "point"
-            );
+            point.classList.add("point");
 
 
-            // ================================
-            // COLOR
-            // ================================
+            /*
+            COLOR
+            */
 
             if (color === "R") {
 
-                point.classList.add(
-                    "red"
-                );
+                point.classList.add("red");
 
             }
 
             else if (color === "W") {
 
-                point.classList.add(
-                    "white"
-                );
+                point.classList.add("white");
 
             }
 
             else if (color === "B") {
 
-                point.classList.add(
-                    "black"
-                );
+                point.classList.add("black");
 
             }
 
 
-            // ================================
-            // DIRECCIÓN DE EXPLOSIÓN
-            // ================================
-
-            const centerX = 9;
-            const centerY = 5;
-
+            /*
+            ======================================
+            DIRECCIÓN DESDE DONDE LLEGA
+            ======================================
+            */
 
             let dx = x - centerX;
             let dy = y - centerY;
 
 
-            // Normalizar dirección
-
-            const distance =
-                Math.sqrt(
-                    dx * dx +
-                    dy * dy
-                );
+            const distance = Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
 
 
             if (distance > 0) {
 
                 dx =
-                    (dx / distance) *
-                    150;
+                    (dx / distance) * 220;
 
                 dy =
-                    (dy / distance) *
-                    150;
+                    (dy / distance) * 220;
+
+            }
+            else {
+
+                dx =
+                    (Math.random() - .5) * 400;
+
+                dy =
+                    (Math.random() - .5) * 400;
 
             }
 
 
-            // Un poco de aleatoriedad
+            /*
+            Pequeña variación para
+            que no entren todos igual
+            */
 
             dx +=
-                (Math.random() - .5) * 70;
+                (Math.random() - .5) * 100;
 
             dy +=
-                (Math.random() - .5) * 70;
+                (Math.random() - .5) * 100;
 
+
+            /*
+            GUARDAR POSICIÓN INICIAL
+            */
 
             point.style.setProperty(
-                "--x",
+                "--start-x",
                 `${dx}px`
             );
 
-
             point.style.setProperty(
-                "--y",
+                "--start-y",
                 `${dy}px`
             );
 
 
-            // Cada punto empieza en
-            // un momento ligeramente distinto
+            /*
+            DELAY ALEATORIO
+            */
 
             const delay =
                 Math.random() * 1.2;
-
 
             point.style.setProperty(
                 "--delay",
@@ -174,38 +201,24 @@ function createPoints() {
 }
 
 
-// ============================================
-// ABRIR / CERRAR
-// ============================================
+/*
+==================================================
+ABRIR / CERRAR
+==================================================
+*/
 
 function toggleAnimation() {
 
-    if (
-        animation.classList.contains(
-            "active"
-        )
-    ) {
-
-        animation.classList.remove(
-            "active"
-        );
-
-    }
-
-    else {
-
-        animation.classList.add(
-            "active"
-        );
-
-    }
+    animation.classList.toggle("active");
 
 }
 
 
-// ============================================
-// BOTÓN 8
-// ============================================
+/*
+==================================================
+BOTÓN
+==================================================
+*/
 
 button8.addEventListener(
     "click",
@@ -213,9 +226,11 @@ button8.addEventListener(
 );
 
 
-// ============================================
-// TECLADO
-// ============================================
+/*
+==================================================
+TECLA 8
+==================================================
+*/
 
 document.addEventListener(
     "keydown",
@@ -238,8 +253,10 @@ document.addEventListener(
 );
 
 
-// ============================================
-// CREAR AL CARGAR
-// ============================================
+/*
+==================================================
+INICIAR
+==================================================
+*/
 
 createPoints();
