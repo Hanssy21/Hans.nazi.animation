@@ -1,53 +1,45 @@
-const button8 = document.getElementById("button8");
-const animation = document.getElementById("animation");
-const points = document.getElementById("points");
+const button8 =
+    document.getElementById("button8");
+
+const animation =
+    document.getElementById("animation");
+
+const points =
+    document.getElementById("points");
+
 
 /*
-==================================================
-MATRIZ 19 x 13
-==================================================
+================================================
+FIGURA NEUTRAL 19 x 13
 
 R = rojo
 W = blanco
 B = negro
+. = espacio
+================================================
 */
 
 const pattern = [
     "RRRRRRRRRRRRRRRRRRR",
-    "RRRRRRRWWWWWRRRRRRR",
-    "RRRRRWWWWBWWWWRRRRR",
-    "RRRRRWWWBWWWWWRRRRR",
-    "RRRRWWWBWWWWBWWWRRR",
-    "RRRRWWWWBWBWBWWRRRR",
-    "RRRRWBWWWBWWWBWRRRR",
-    "RRRRWWBWBWBWWWWRRRR",
-    "RRRRWWWBWWBWWWRRRR",
-    "RRRRRWWWWWBWWWRRRR",
-    "RRRRRWWWWBWWWWRRRR",
-    "RRRRRRRWWWWWRRRRRRR",
+    "RRRRRRWWWWWWRRRRRRR",
+    "RRRRWWWWBWWWWRRRRRR",
+    "RRRWWWBBWBWWW RRRRR".replace(/ /g, ""),
+    "RRRWWBWWWBWWBRRRRRR",
+    "RRRWWWWBWBWWWRRRRRR",
+    "RRRWWWBWWWBWWWRRRRR",
+    "RRRWWWWBWBWWWRRRRR",
+    "RRRWWBWWWBWWBRRRRRR",
+    "RRRWWWBBWBWWWRRRRRR",
+    "RRRRWWWWBWWWWRRRRRR",
+    "RRRRRRWWWWWWRRRRRRR",
     "RRRRRRRRRRRRRRRRRRR"
 ];
 
 
 /*
-==================================================
-COMPROBAR QUE TODAS LAS FILAS TENGAN 19 PUNTOS
-==================================================
-*/
-
-pattern.forEach((row, i) => {
-    if (row.length !== 19) {
-        console.error(
-            `Fila ${i + 1}: tiene ${row.length} puntos`
-        );
-    }
-});
-
-
-/*
-==================================================
-CREAR LOS PUNTOS
-==================================================
+================================================
+CREAR PUNTOS
+================================================
 */
 
 function createPoints() {
@@ -61,9 +53,15 @@ function createPoints() {
 
         [...row].forEach((color, x) => {
 
-            const point = document.createElement("div");
+            if (color === ".") {
+                return;
+            }
+
+            const point =
+                document.createElement("div");
 
             point.classList.add("point");
+
 
             if (color === "R") {
                 point.classList.add("red");
@@ -79,36 +77,46 @@ function createPoints() {
 
 
             /*
-            ------------------------------------------
-            POSICIÓN DESDE LA QUE LLEGA EL PUNTO
-            ------------------------------------------
+            Dirección desde donde
+            llegará cada punto.
             */
 
             let dx = x - centerX;
             let dy = y - centerY;
 
-            const distance = Math.sqrt(
-                dx * dx + dy * dy
-            );
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
 
             if (distance > 0) {
 
-                dx = (dx / distance) * 250;
-                dy = (dy / distance) * 250;
+                dx =
+                    (dx / distance) * 250;
+
+                dy =
+                    (dy / distance) * 250;
 
             } else {
 
                 dx = 0;
                 dy = 250;
-
             }
 
+
             /*
-            Pequeña variación
+            Variación para que
+            la entrada sea más orgánica.
             */
 
-            dx += (Math.random() - 0.5) * 60;
-            dy += (Math.random() - 0.5) * 60;
+            dx +=
+                (Math.random() - .5) * 60;
+
+            dy +=
+                (Math.random() - .5) * 60;
+
 
             point.style.setProperty(
                 "--start-x",
@@ -121,40 +129,34 @@ function createPoints() {
             );
 
 
-            /*
-            Cada punto entra ligeramente
-            después que otro.
-            */
-
             point.style.setProperty(
                 "--delay",
-                `${Math.random() * 0.7}s`
+                `${Math.random() * .7}s`
             );
 
 
             points.appendChild(point);
-
         });
-
     });
 }
 
 
 /*
-==================================================
-ABRIR / CERRAR
-==================================================
+================================================
+ACTIVAR / DESACTIVAR
+================================================
 */
 
 function toggleAnimation() {
+
     animation.classList.toggle("active");
 }
 
 
 /*
-==================================================
-BOTÓN 8
-==================================================
+================================================
+BOTÓN
+================================================
 */
 
 button8.addEventListener(
@@ -164,9 +166,9 @@ button8.addEventListener(
 
 
 /*
-==================================================
+================================================
 TECLA 8
-==================================================
+================================================
 */
 
 document.addEventListener(
@@ -181,17 +183,15 @@ document.addEventListener(
             if (!event.repeat) {
                 toggleAnimation();
             }
-
         }
-
     }
 );
 
 
 /*
-==================================================
+================================================
 INICIAR
-==================================================
+================================================
 */
 
 createPoints();

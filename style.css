@@ -12,10 +12,8 @@ body {
             circle,
             #242424 0%,
             #090909 65%,
-            #000000 100%
+            #000 100%
         );
-
-    color: white;
 
     font-family: Arial, sans-serif;
 
@@ -27,20 +25,16 @@ body {
 }
 
 
-/* =========================================
-   BOTÓN 8
-========================================= */
+/* BOTÓN */
 
 #button8 {
     width: 78px;
     height: 78px;
 
     border-radius: 50%;
-
     border: 2px solid #ff1744;
 
     background: #111;
-
     color: white;
 
     font-size: 32px;
@@ -70,9 +64,7 @@ body {
 }
 
 
-/* =========================================
-   CONTENEDOR DE LA FIGURA
-========================================= */
+/* ANIMACIÓN */
 
 #animation {
     position: fixed;
@@ -80,15 +72,7 @@ body {
     left: 50%;
     top: 50%;
 
-    /*
-       Más grande para que la figura
-       se pueda apreciar bien.
-    */
-    width: min(96vw, 850px);
-
-    /*
-       19 columnas x 13 filas
-    */
+    width: min(90vw, 700px);
     aspect-ratio: 19 / 13;
 
     transform:
@@ -100,12 +84,11 @@ body {
     pointer-events: none;
 
     z-index: 10;
+
+    transition:
+        transform .5s ease,
+        opacity .5s ease;
 }
-
-
-/* =========================================
-   FIGURA ACTIVADA
-========================================= */
 
 #animation.active {
     opacity: 1;
@@ -116,9 +99,7 @@ body {
 }
 
 
-/* =========================================
-   MATRIZ DE PUNTOS
-========================================= */
+/* MATRIZ */
 
 #points {
     width: 100%;
@@ -132,20 +113,11 @@ body {
     grid-template-rows:
         repeat(13, 1fr);
 
-    /*
-       Separación visible entre puntos.
-    */
-    gap: clamp(
-        3px,
-        .7vw,
-        8px
-    );
+    gap: clamp(3px, .7vw, 8px);
 }
 
 
-/* =========================================
-   CADA PUNTO
-========================================= */
+/* PUNTOS */
 
 .point {
     width: 100%;
@@ -164,9 +136,7 @@ body {
 }
 
 
-/* =========================================
-   ROJO
-========================================= */
+/* COLORES */
 
 .red {
     background: #ff1b1b;
@@ -176,57 +146,25 @@ body {
         0 0 12px rgba(255, 0, 0, .65);
 }
 
-
-/* =========================================
-   BLANCO
-========================================= */
-
 .white {
-    background: #ffffff;
+    background: #fff;
 
     box-shadow:
-        0 0 5px rgba(
-            255,
-            255,
-            255,
-            .45
-        );
+        0 0 5px rgba(255,255,255,.45);
 }
-
-
-/* =========================================
-   NEGRO
-========================================= */
 
 .black {
     background: #050505;
-
-    box-shadow:
-        0 0 4px #000;
 }
 
 
-/* =========================================
-   ANIMACIÓN DE LOS PUNTOS
-========================================= */
+/* ANIMACIÓN */
 
 #animation.active .point {
-
-    /*
-       12 segundos por ciclo.
-
-       Esto hace que el símbolo
-       permanezca visible bastante tiempo.
-    */
     animation:
         formAndStay
         12s
-        cubic-bezier(
-            .2,
-            .8,
-            .2,
-            1
-        )
+        cubic-bezier(.2,.8,.2,1)
         infinite;
 
     animation-delay:
@@ -234,27 +172,8 @@ body {
 }
 
 
-/*
-=================================================
-ANIMACIÓN PRINCIPAL
-
-0%   = puntos fuera
-15%  = comienzan a entrar
-28%  = forman la figura
-60%  = permanecen quietos
-68%  = pequeño crecimiento
-76%  = vuelven a quedarse quietos
-82%  = comienzan a salir
-100% = desaparecen
-=================================================
-*/
-
 @keyframes formAndStay {
 
-    /* -----------------------------------------
-       PUNTOS FUERA DE LA FIGURA
-    ----------------------------------------- */
-
     0% {
         opacity: 0;
 
@@ -266,104 +185,67 @@ ANIMACIÓN PRINCIPAL
             scale(0);
     }
 
-
-    /* -----------------------------------------
-       COMIENZAN A ENTRAR
-    ----------------------------------------- */
-
     15% {
         opacity: .5;
 
         transform:
             translate(
-                calc(
-                    var(--start-x) * .5
-                ),
-                calc(
-                    var(--start-y) * .5
-                )
+                calc(var(--start-x) * .5),
+                calc(var(--start-y) * .5)
             )
             scale(.5);
     }
-
-
-    /* -----------------------------------------
-       FORMAN LA FIGURA
-    ----------------------------------------- */
 
     28% {
         opacity: 1;
 
         transform:
-            translate(0, 0)
+            translate(0,0)
             scale(1);
     }
 
-
-    /* -----------------------------------------
-       SE QUEDAN COMPLETAMENTE QUIETOS
-       
-       AQUÍ SE PUEDE APRECIAR EL SÍMBOLO
-    ----------------------------------------- */
+    /* SE QUEDA QUIETO */
 
     60% {
         opacity: 1;
 
         transform:
-            translate(0, 0)
+            translate(0,0)
             scale(1);
     }
 
-
-    /* -----------------------------------------
-       PEQUEÑO PULSO
-    ----------------------------------------- */
+    /* PULSO */
 
     68% {
         opacity: 1;
 
         transform:
-            translate(0, 0)
+            translate(0,0)
             scale(1.08);
     }
 
-
-    /* -----------------------------------------
-       VUELVEN A QUEDARSE QUIETOS
-    ----------------------------------------- */
+    /* VUELVE A QUEDARSE QUIETO */
 
     76% {
         opacity: 1;
 
         transform:
-            translate(0, 0)
+            translate(0,0)
             scale(1);
     }
 
-
-    /* -----------------------------------------
-       COMIENZAN A DISPERSARSE
-    ----------------------------------------- */
+    /* SALE */
 
     82% {
         opacity: .8;
 
         transform:
             translate(
-                calc(
-                    var(--start-x) * .35
-                ),
-                calc(
-                    var(--start-y) * .35
-                )
+                calc(var(--start-x) * .35),
+                calc(var(--start-y) * .35)
             )
             scale(.8);
     }
-
-
-    /* -----------------------------------------
-       DESAPARECEN
-    ----------------------------------------- */
 
     100% {
         opacity: 0;
@@ -378,155 +260,40 @@ ANIMACIÓN PRINCIPAL
 }
 
 
-/* =========================================
-   ANIMACIÓN ESPECIAL DE LOS PUNTOS ROJOS
-========================================= */
+/* CRÉDITO */
 
-#animation.active .red {
-    animation-name: redFormAndStay;
+#credit {
+    position: fixed;
+
+    bottom: 25px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+    opacity: .8;
+
+    text-shadow:
+        0 0 5px rgba(255,255,255,.5);
+
+    z-index: 20;
+
+    white-space: nowrap;
 }
 
 
-@keyframes redFormAndStay {
-
-    /* FUERA */
-
-    0% {
-        opacity: 0;
-
-        transform:
-            translate(
-                var(--start-x),
-                var(--start-y)
-            )
-            scale(0);
-
-        filter: brightness(1);
-    }
-
-
-    /* ENTRANDO */
-
-    15% {
-        opacity: .5;
-
-        transform:
-            translate(
-                calc(
-                    var(--start-x) * .5
-                ),
-                calc(
-                    var(--start-y) * .5
-                )
-            )
-            scale(.5);
-    }
-
-
-    /* FORMA COMPLETA */
-
-    28% {
-        opacity: 1;
-
-        transform:
-            translate(0, 0)
-            scale(1);
-
-        filter: brightness(1);
-    }
-
-
-    /* QUIETO */
-
-    60% {
-        opacity: 1;
-
-        transform:
-            translate(0, 0)
-            scale(1);
-
-        filter: brightness(1);
-    }
-
-
-    /* PEQUEÑO PULSO ROJO */
-
-    68% {
-        opacity: 1;
-
-        transform:
-            translate(0, 0)
-            scale(1.08);
-
-        filter: brightness(1.5);
-
-        box-shadow:
-            0 0 8px #ff0000,
-            0 0 18px #ff0000,
-            0 0 30px rgba(255, 0, 0, .8);
-    }
-
-
-    /* QUIETO OTRA VEZ */
-
-    76% {
-        opacity: 1;
-
-        transform:
-            translate(0, 0)
-            scale(1);
-
-        filter: brightness(1);
-
-        box-shadow:
-            0 0 5px #ff0000,
-            0 0 12px rgba(255, 0, 0, .65);
-    }
-
-
-    /* COMIENZA A SALIR */
-
-    82% {
-        opacity: .8;
-
-        transform:
-            translate(
-                calc(
-                    var(--start-x) * .35
-                ),
-                calc(
-                    var(--start-y) * .35
-                )
-            )
-            scale(.8);
-    }
-
-
-    /* DESAPARECE */
-
-    100% {
-        opacity: 0;
-
-        transform:
-            translate(
-                var(--start-x),
-                var(--start-y)
-            )
-            scale(0);
-
-        filter: brightness(1);
-    }
-}
-
-
-/* =========================================
-   MÓVIL
-========================================= */
+/* MÓVIL */
 
 @media (max-width: 600px) {
 
     #animation {
-        width: 95vw;
+        width: 94vw;
     }
 
     #points {
@@ -539,16 +306,20 @@ ANIMACIÓN PRINCIPAL
 
         font-size: 29px;
     }
+
+    #credit {
+        font-size: 11px;
+        letter-spacing: 3px;
+        bottom: 18px;
+    }
 }
 
 
-/* =========================================
-   PANTALLAS BAJAS
-========================================= */
+/* PANTALLAS BAJAS */
 
 @media (max-height: 600px) {
 
     #animation {
-        width: 78vw;
+        width: 75vw;
     }
 }
