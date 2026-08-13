@@ -6,29 +6,41 @@
 
 body {
     min-height: 100vh;
+
     background:
-        radial-gradient(circle, #242424 0%, #080808 65%, #000 100%);
+        radial-gradient(
+            circle,
+            #242424 0%,
+            #090909 65%,
+            #000000 100%
+        );
+
+    color: white;
+
+    font-family: Arial, sans-serif;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     overflow: hidden;
-
-    font-family: Arial, sans-serif;
 }
 
 
-/* BOTÓN */
+/* =========================
+   BOTÓN 8
+========================= */
 
 #button8 {
     width: 78px;
     height: 78px;
 
     border-radius: 50%;
+
     border: 2px solid #ff1744;
 
     background: #111;
+
     color: white;
 
     font-size: 32px;
@@ -40,7 +52,9 @@ body {
         0 0 10px #ff1744,
         0 0 30px rgba(255, 23, 68, .5);
 
-    transition: transform .2s;
+    transition:
+        transform .2s,
+        box-shadow .2s;
 }
 
 #button8:hover {
@@ -56,9 +70,12 @@ body {
 }
 
 
-/* ANIMACIÓN */
+/* =========================
+   CONTENEDOR DE ANIMACIÓN
+========================= */
 
 #animation {
+
     position: fixed;
 
     left: 50%;
@@ -80,9 +97,12 @@ body {
 }
 
 
-/* ACTIVADA */
+/* =========================
+   ANIMACIÓN ACTIVADA
+========================= */
 
 #animation.active {
+
     opacity: 1;
 
     transform:
@@ -91,24 +111,37 @@ body {
 }
 
 
-/* MATRIZ */
+/* =========================
+   MATRIZ DE PUNTOS
+========================= */
 
 #points {
+
     width: 100%;
     height: 100%;
 
     display: grid;
 
-    grid-template-columns: repeat(19, 1fr);
-    grid-template-rows: repeat(13, 1fr);
+    grid-template-columns:
+        repeat(19, 1fr);
 
-    gap: clamp(2px, .45vw, 6px);
+    grid-template-rows:
+        repeat(13, 1fr);
+
+    gap: clamp(
+        2px,
+        .45vw,
+        6px
+    );
 }
 
 
-/* PUNTO */
+/* =========================
+   CADA PUNTO
+========================= */
 
 .point {
+
     width: 100%;
     aspect-ratio: 1;
 
@@ -117,14 +150,20 @@ body {
     opacity: 0;
 
     transform:
-        translate(var(--start-x), var(--start-y))
+        translate(
+            var(--start-x),
+            var(--start-y)
+        )
         scale(0);
 }
 
 
-/* ROJO */
+/* =========================
+   PUNTOS ROJOS
+========================= */
 
 .red {
+
     background: #ff1b1b;
 
     box-shadow:
@@ -133,19 +172,30 @@ body {
 }
 
 
-/* BLANCO */
+/* =========================
+   PUNTOS BLANCOS
+========================= */
 
 .white {
+
     background: #ffffff;
 
     box-shadow:
-        0 0 4px rgba(255,255,255,.45);
+        0 0 4px rgba(
+            255,
+            255,
+            255,
+            .45
+        );
 }
 
 
-/* NEGRO */
+/* =========================
+   PUNTOS NEGROS
+========================= */
 
 .black {
+
     background: #050505;
 
     box-shadow:
@@ -153,41 +203,50 @@ body {
 }
 
 
-/*
-========================================
-ANIMACIÓN GENERAL
-========================================
-*/
+/* ==================================================
+   ANIMACIÓN DE LOS PUNTOS
+================================================== */
 
 #animation.active .point {
 
     animation:
-        formAndExplode
-        4s
-        cubic-bezier(.2,.8,.2,1)
+        formAndStay
+        9s
+        cubic-bezier(
+            .2,
+            .8,
+            .2,
+            1
+        )
         infinite;
 
-    animation-delay: var(--delay);
+    animation-delay:
+        var(--delay);
 }
 
 
 /*
-========================================
-PUNTOS
+==================================================
+ANIMACIÓN PRINCIPAL
 
-0%   lejos
-18%  empiezan
-35%  forman figura
-48%  crecen
-63%  explotan
-78%  regresan
-100% figura
-========================================
+0%   → puntos dispersos
+15%  → empiezan a entrar
+27%  → forman el símbolo
+55%  → permanecen quietos
+63%  → pequeño pulso
+72%  → vuelven a quedarse quietos
+100% → se dispersan
+==================================================
 */
 
-@keyframes formAndExplode {
+@keyframes formAndStay {
+
+    /* =====================
+       PUNTOS DISPERSOS
+    ===================== */
 
     0% {
+
         opacity: 0;
 
         transform:
@@ -198,105 +257,161 @@ PUNTOS
             scale(0);
     }
 
-    15% {
-        opacity: .4;
 
-        transform:
-            translate(
-                calc(var(--start-x) * .6),
-                calc(var(--start-y) * .6)
-            )
-            scale(.45);
-    }
-
-    35% {
-        opacity: 1;
-
-        transform:
-            translate(0, 0)
-            scale(1);
-    }
-
-    48% {
-        opacity: 1;
-
-        transform:
-            translate(0, 0)
-            scale(1.35);
-    }
-
-    63% {
-        opacity: .9;
-
-        transform:
-            translate(
-                calc(var(--start-x) * .55),
-                calc(var(--start-y) * .55)
-            )
-            scale(.9);
-    }
-
-    78% {
-        opacity: 1;
-
-        transform:
-            translate(
-                calc(var(--start-x) * .12),
-                calc(var(--start-y) * .12)
-            )
-            scale(.8);
-    }
-
-    88% {
-        opacity: 1;
-
-        transform:
-            translate(0, 0)
-            scale(1.15);
-    }
-
-    100% {
-        opacity: 1;
-
-        transform:
-            translate(0, 0)
-            scale(1);
-    }
-}
-
-
-/* ROJOS CON MÁS BRILLO */
-
-#animation.active .red {
-    animation-name: redAnimation;
-}
-
-
-@keyframes redAnimation {
-
-    0% {
-        opacity: 0;
-
-        transform:
-            translate(
-                var(--start-x),
-                var(--start-y)
-            )
-            scale(0);
-    }
+    /* =====================
+       EMPIEZAN A ENTRAR
+    ===================== */
 
     15% {
+
         opacity: .5;
 
         transform:
             translate(
-                calc(var(--start-x) * .6),
-                calc(var(--start-y) * .6)
+                calc(
+                    var(--start-x) * .5
+                ),
+                calc(
+                    var(--start-y) * .5
+                )
             )
-            scale(.45);
+            scale(.5);
     }
 
-    35% {
+
+    /* =====================
+       FORMAN EL SÍMBOLO
+    ===================== */
+
+    27% {
+
+        opacity: 1;
+
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
+
+
+    /* =====================
+       SE QUEDAN QUIETOS
+    ===================== */
+
+    55% {
+
+        opacity: 1;
+
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
+
+
+    /* =====================
+       PEQUEÑO PULSO
+    ===================== */
+
+    63% {
+
+        opacity: 1;
+
+        transform:
+            translate(0, 0)
+            scale(1.12);
+    }
+
+
+    /* =====================
+       VUELVEN A QUEDARSE QUIETOS
+    ===================== */
+
+    72% {
+
+        opacity: 1;
+
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
+
+
+    /* =====================
+       SE DISPERSAN
+    ===================== */
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translate(
+                var(--start-x),
+                var(--start-y)
+            )
+            scale(0);
+    }
+}
+
+
+/* ==================================================
+   ANIMACIÓN ESPECIAL PARA LOS ROJOS
+================================================== */
+
+#animation.active .red {
+
+    animation-name:
+        redFormAndStay;
+}
+
+
+@keyframes redFormAndStay {
+
+    /* =====================
+       DISPERSOS
+    ===================== */
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translate(
+                var(--start-x),
+                var(--start-y)
+            )
+            scale(0);
+
+        filter: brightness(1);
+    }
+
+
+    /* =====================
+       ENTRANDO
+    ===================== */
+
+    15% {
+
+        opacity: .5;
+
+        transform:
+            translate(
+                calc(
+                    var(--start-x) * .5
+                ),
+                calc(
+                    var(--start-y) * .5
+                )
+            )
+            scale(.5);
+    }
+
+
+    /* =====================
+       FORMAN EL SÍMBOLO
+    ===================== */
+
+    27% {
+
         opacity: 1;
 
         transform:
@@ -306,14 +421,36 @@ PUNTOS
         filter: brightness(1);
     }
 
-    48% {
+
+    /* =====================
+       QUIETOS
+    ===================== */
+
+    55% {
+
         opacity: 1;
 
         transform:
             translate(0, 0)
-            scale(1.4);
+            scale(1);
 
-        filter: brightness(2);
+        filter: brightness(1);
+    }
+
+
+    /* =====================
+       PULSO ROJO
+    ===================== */
+
+    63% {
+
+        opacity: 1;
+
+        transform:
+            translate(0, 0)
+            scale(1.15);
+
+        filter: brightness(1.7);
 
         box-shadow:
             0 0 8px red,
@@ -321,35 +458,13 @@ PUNTOS
             0 0 35px red;
     }
 
-    63% {
-        opacity: .8;
 
-        transform:
-            translate(
-                calc(var(--start-x) * .55),
-                calc(var(--start-y) * .55)
-            )
-            scale(.9);
-    }
+    /* =====================
+       QUIETO OTRA VEZ
+    ===================== */
 
-    78% {
-        opacity: 1;
+    72% {
 
-        transform:
-            translate(
-                calc(var(--start-x) * .12),
-                calc(var(--start-y) * .12)
-            )
-            scale(.8);
-    }
-
-    88% {
-        transform:
-            translate(0, 0)
-            scale(1.15);
-    }
-
-    100% {
         opacity: 1;
 
         transform:
@@ -358,33 +473,64 @@ PUNTOS
 
         filter: brightness(1);
     }
+
+
+    /* =====================
+       DESAPARECEN
+    ===================== */
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translate(
+                var(--start-x),
+                var(--start-y)
+            )
+            scale(0);
+
+        filter: brightness(1);
+    }
 }
 
 
-/* MÓVIL */
+/* ==================================================
+   MÓVILES
+================================================== */
 
 @media (max-width: 600px) {
 
     #animation {
+
         width: 95vw;
     }
 
+
     #points {
+
         gap: 2px;
     }
 
+
     #button8 {
+
         width: 68px;
         height: 68px;
+
+        font-size: 29px;
     }
 }
 
 
-/* PANTALLAS BAJAS */
+/* ==================================================
+   PANTALLAS CON POCA ALTURA
+================================================== */
 
 @media (max-height: 600px) {
 
     #animation {
+
         width: 75vw;
     }
 }
