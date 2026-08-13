@@ -27,9 +27,9 @@ body {
 }
 
 
-/* =========================
+/* =========================================
    BOTÓN 8
-========================= */
+========================================= */
 
 #button8 {
     width: 78px;
@@ -70,19 +70,25 @@ body {
 }
 
 
-/* =========================
-   CONTENEDOR DE ANIMACIÓN
-========================= */
+/* =========================================
+   CONTENEDOR DE LA FIGURA
+========================================= */
 
 #animation {
-
     position: fixed;
 
     left: 50%;
     top: 50%;
 
-    width: min(92vw, 760px);
+    /*
+       Más grande para que la figura
+       se pueda apreciar bien.
+    */
+    width: min(96vw, 850px);
 
+    /*
+       19 columnas x 13 filas
+    */
     aspect-ratio: 19 / 13;
 
     transform:
@@ -97,12 +103,11 @@ body {
 }
 
 
-/* =========================
-   ANIMACIÓN ACTIVADA
-========================= */
+/* =========================================
+   FIGURA ACTIVADA
+========================================= */
 
 #animation.active {
-
     opacity: 1;
 
     transform:
@@ -111,12 +116,11 @@ body {
 }
 
 
-/* =========================
+/* =========================================
    MATRIZ DE PUNTOS
-========================= */
+========================================= */
 
 #points {
-
     width: 100%;
     height: 100%;
 
@@ -128,20 +132,22 @@ body {
     grid-template-rows:
         repeat(13, 1fr);
 
+    /*
+       Separación visible entre puntos.
+    */
     gap: clamp(
-        2px,
-        .45vw,
-        6px
+        3px,
+        .7vw,
+        8px
     );
 }
 
 
-/* =========================
+/* =========================================
    CADA PUNTO
-========================= */
+========================================= */
 
 .point {
-
     width: 100%;
     aspect-ratio: 1;
 
@@ -158,30 +164,28 @@ body {
 }
 
 
-/* =========================
-   PUNTOS ROJOS
-========================= */
+/* =========================================
+   ROJO
+========================================= */
 
 .red {
-
     background: #ff1b1b;
 
     box-shadow:
-        0 0 4px #ff0000,
-        0 0 10px rgba(255, 0, 0, .6);
+        0 0 5px #ff0000,
+        0 0 12px rgba(255, 0, 0, .65);
 }
 
 
-/* =========================
-   PUNTOS BLANCOS
-========================= */
+/* =========================================
+   BLANCO
+========================================= */
 
 .white {
-
     background: #ffffff;
 
     box-shadow:
-        0 0 4px rgba(
+        0 0 5px rgba(
             255,
             255,
             255,
@@ -190,12 +194,11 @@ body {
 }
 
 
-/* =========================
-   PUNTOS NEGROS
-========================= */
+/* =========================================
+   NEGRO
+========================================= */
 
 .black {
-
     background: #050505;
 
     box-shadow:
@@ -203,15 +206,21 @@ body {
 }
 
 
-/* ==================================================
+/* =========================================
    ANIMACIÓN DE LOS PUNTOS
-================================================== */
+========================================= */
 
 #animation.active .point {
 
+    /*
+       12 segundos por ciclo.
+
+       Esto hace que el símbolo
+       permanezca visible bastante tiempo.
+    */
     animation:
         formAndStay
-        9s
+        12s
         cubic-bezier(
             .2,
             .8,
@@ -226,27 +235,27 @@ body {
 
 
 /*
-==================================================
+=================================================
 ANIMACIÓN PRINCIPAL
 
-0%   → puntos dispersos
-15%  → empiezan a entrar
-27%  → forman el símbolo
-55%  → permanecen quietos
-63%  → pequeño pulso
-72%  → vuelven a quedarse quietos
-100% → se dispersan
-==================================================
+0%   = puntos fuera
+15%  = comienzan a entrar
+28%  = forman la figura
+60%  = permanecen quietos
+68%  = pequeño crecimiento
+76%  = vuelven a quedarse quietos
+82%  = comienzan a salir
+100% = desaparecen
+=================================================
 */
 
 @keyframes formAndStay {
 
-    /* =====================
-       PUNTOS DISPERSOS
-    ===================== */
+    /* -----------------------------------------
+       PUNTOS FUERA DE LA FIGURA
+    ----------------------------------------- */
 
     0% {
-
         opacity: 0;
 
         transform:
@@ -258,12 +267,11 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
-       EMPIEZAN A ENTRAR
-    ===================== */
+    /* -----------------------------------------
+       COMIENZAN A ENTRAR
+    ----------------------------------------- */
 
     15% {
-
         opacity: .5;
 
         transform:
@@ -279,12 +287,11 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
-       FORMAN EL SÍMBOLO
-    ===================== */
+    /* -----------------------------------------
+       FORMAN LA FIGURA
+    ----------------------------------------- */
 
-    27% {
-
+    28% {
         opacity: 1;
 
         transform:
@@ -293,12 +300,13 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
-       SE QUEDAN QUIETOS
-    ===================== */
+    /* -----------------------------------------
+       SE QUEDAN COMPLETAMENTE QUIETOS
+       
+       AQUÍ SE PUEDE APRECIAR EL SÍMBOLO
+    ----------------------------------------- */
 
-    55% {
-
+    60% {
         opacity: 1;
 
         transform:
@@ -307,26 +315,24 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
+    /* -----------------------------------------
        PEQUEÑO PULSO
-    ===================== */
+    ----------------------------------------- */
 
-    63% {
-
+    68% {
         opacity: 1;
 
         transform:
             translate(0, 0)
-            scale(1.12);
+            scale(1.08);
     }
 
 
-    /* =====================
+    /* -----------------------------------------
        VUELVEN A QUEDARSE QUIETOS
-    ===================== */
+    ----------------------------------------- */
 
-    72% {
-
+    76% {
         opacity: 1;
 
         transform:
@@ -335,12 +341,31 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
-       SE DISPERSAN
-    ===================== */
+    /* -----------------------------------------
+       COMIENZAN A DISPERSARSE
+    ----------------------------------------- */
+
+    82% {
+        opacity: .8;
+
+        transform:
+            translate(
+                calc(
+                    var(--start-x) * .35
+                ),
+                calc(
+                    var(--start-y) * .35
+                )
+            )
+            scale(.8);
+    }
+
+
+    /* -----------------------------------------
+       DESAPARECEN
+    ----------------------------------------- */
 
     100% {
-
         opacity: 0;
 
         transform:
@@ -353,25 +378,20 @@ ANIMACIÓN PRINCIPAL
 }
 
 
-/* ==================================================
-   ANIMACIÓN ESPECIAL PARA LOS ROJOS
-================================================== */
+/* =========================================
+   ANIMACIÓN ESPECIAL DE LOS PUNTOS ROJOS
+========================================= */
 
 #animation.active .red {
-
-    animation-name:
-        redFormAndStay;
+    animation-name: redFormAndStay;
 }
 
 
 @keyframes redFormAndStay {
 
-    /* =====================
-       DISPERSOS
-    ===================== */
+    /* FUERA */
 
     0% {
-
         opacity: 0;
 
         transform:
@@ -385,12 +405,9 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
-       ENTRANDO
-    ===================== */
+    /* ENTRANDO */
 
     15% {
-
         opacity: .5;
 
         transform:
@@ -406,12 +423,9 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
-       FORMAN EL SÍMBOLO
-    ===================== */
+    /* FORMA COMPLETA */
 
-    27% {
-
+    28% {
         opacity: 1;
 
         transform:
@@ -422,12 +436,9 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
-       QUIETOS
-    ===================== */
+    /* QUIETO */
 
-    55% {
-
+    60% {
         opacity: 1;
 
         transform:
@@ -438,33 +449,27 @@ ANIMACIÓN PRINCIPAL
     }
 
 
-    /* =====================
-       PULSO ROJO
-    ===================== */
+    /* PEQUEÑO PULSO ROJO */
 
-    63% {
-
+    68% {
         opacity: 1;
 
         transform:
             translate(0, 0)
-            scale(1.15);
+            scale(1.08);
 
-        filter: brightness(1.7);
+        filter: brightness(1.5);
 
         box-shadow:
-            0 0 8px red,
-            0 0 20px red,
-            0 0 35px red;
+            0 0 8px #ff0000,
+            0 0 18px #ff0000,
+            0 0 30px rgba(255, 0, 0, .8);
     }
 
 
-    /* =====================
-       QUIETO OTRA VEZ
-    ===================== */
+    /* QUIETO OTRA VEZ */
 
-    72% {
-
+    76% {
         opacity: 1;
 
         transform:
@@ -472,15 +477,34 @@ ANIMACIÓN PRINCIPAL
             scale(1);
 
         filter: brightness(1);
+
+        box-shadow:
+            0 0 5px #ff0000,
+            0 0 12px rgba(255, 0, 0, .65);
     }
 
 
-    /* =====================
-       DESAPARECEN
-    ===================== */
+    /* COMIENZA A SALIR */
+
+    82% {
+        opacity: .8;
+
+        transform:
+            translate(
+                calc(
+                    var(--start-x) * .35
+                ),
+                calc(
+                    var(--start-y) * .35
+                )
+            )
+            scale(.8);
+    }
+
+
+    /* DESAPARECE */
 
     100% {
-
         opacity: 0;
 
         transform:
@@ -495,26 +519,21 @@ ANIMACIÓN PRINCIPAL
 }
 
 
-/* ==================================================
-   MÓVILES
-================================================== */
+/* =========================================
+   MÓVIL
+========================================= */
 
 @media (max-width: 600px) {
 
     #animation {
-
         width: 95vw;
     }
 
-
     #points {
-
-        gap: 2px;
+        gap: 3px;
     }
 
-
     #button8 {
-
         width: 68px;
         height: 68px;
 
@@ -523,14 +542,13 @@ ANIMACIÓN PRINCIPAL
 }
 
 
-/* ==================================================
-   PANTALLAS CON POCA ALTURA
-================================================== */
+/* =========================================
+   PANTALLAS BAJAS
+========================================= */
 
 @media (max-height: 600px) {
 
     #animation {
-
-        width: 75vw;
+        width: 78vw;
     }
 }

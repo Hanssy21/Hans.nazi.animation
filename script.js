@@ -2,76 +2,51 @@ const button8 = document.getElementById("button8");
 const animation = document.getElementById("animation");
 const points = document.getElementById("points");
 
-
 /*
 ==================================================
-FIGURA EXACTA
+MATRIZ 19 x 13
 ==================================================
 
-19 COLUMNAS
-13 FILAS
-
-R = ROJO
-W = BLANCO
-B = NEGRO
-
-Cada fila tiene EXACTAMENTE 19 posiciones.
-==================================================
+R = rojo
+W = blanco
+B = negro
 */
 
 const pattern = [
-
     "RRRRRRRRRRRRRRRRRRR",
-
     "RRRRRRRWWWWWRRRRRRR",
-
     "RRRRRWWWWBWWWWRRRRR",
-
     "RRRRRWWWBWWWWWRRRRR",
-
     "RRRRWWWBWWWWBWWWRRR",
-
     "RRRRWWWWBWBWBWWRRRR",
-
-    "RRRRWWBWWWBWWWBWRRR",
-
-    "RRRRWWWBWBWBWWWWRRR",
-
-    "RRRRWWWWBWWBWWWRRR",
-
+    "RRRRWBWWWBWWWBWRRRR",
+    "RRRRWWBWBWBWWWWRRRR",
+    "RRRRWWWBWWBWWWRRRR",
     "RRRRRWWWWWBWWWRRRR",
-
     "RRRRRWWWWBWWWWRRRR",
-
     "RRRRRRRWWWWWRRRRRRR",
-
     "RRRRRRRRRRRRRRRRRRR"
-
 ];
 
 
 /*
 ==================================================
-COMPROBAR MATRIZ
+COMPROBAR QUE TODAS LAS FILAS TENGAN 19 PUNTOS
 ==================================================
 */
 
-pattern.forEach((row, index) => {
-
+pattern.forEach((row, i) => {
     if (row.length !== 19) {
-
         console.error(
-            `ERROR: fila ${index + 1} tiene ${row.length} columnas`
+            `Fila ${i + 1}: tiene ${row.length} puntos`
         );
-
     }
-
 });
 
 
 /*
 ==================================================
-CREAR LOS 247 PUNTOS
+CREAR LOS PUNTOS
 ==================================================
 */
 
@@ -86,87 +61,54 @@ function createPoints() {
 
         [...row].forEach((color, x) => {
 
-            const point =
-                document.createElement("div");
-
+            const point = document.createElement("div");
 
             point.classList.add("point");
 
-
-            /*
-            COLOR
-            */
-
             if (color === "R") {
-
                 point.classList.add("red");
-
             }
 
-            else if (color === "W") {
-
+            if (color === "W") {
                 point.classList.add("white");
-
             }
 
-            else if (color === "B") {
-
+            if (color === "B") {
                 point.classList.add("black");
-
             }
 
 
             /*
-            ======================================
-            DIRECCIÓN DESDE DONDE LLEGA
-            ======================================
+            ------------------------------------------
+            POSICIÓN DESDE LA QUE LLEGA EL PUNTO
+            ------------------------------------------
             */
 
             let dx = x - centerX;
             let dy = y - centerY;
 
-
             const distance = Math.sqrt(
-                dx * dx +
-                dy * dy
+                dx * dx + dy * dy
             );
-
 
             if (distance > 0) {
 
-                dx =
-                    (dx / distance) * 220;
+                dx = (dx / distance) * 250;
+                dy = (dy / distance) * 250;
 
-                dy =
-                    (dy / distance) * 220;
+            } else {
 
-            }
-            else {
-
-                dx =
-                    (Math.random() - .5) * 400;
-
-                dy =
-                    (Math.random() - .5) * 400;
+                dx = 0;
+                dy = 250;
 
             }
 
-
             /*
-            Pequeña variación para
-            que no entren todos igual
+            Pequeña variación
             */
 
-            dx +=
-                (Math.random() - .5) * 100;
-
-            dy +=
-                (Math.random() - .5) * 100;
-
-
-            /*
-            GUARDAR POSICIÓN INICIAL
-            */
+            dx += (Math.random() - 0.5) * 60;
+            dy += (Math.random() - 0.5) * 60;
 
             point.style.setProperty(
                 "--start-x",
@@ -180,15 +122,13 @@ function createPoints() {
 
 
             /*
-            DELAY ALEATORIO
+            Cada punto entra ligeramente
+            después que otro.
             */
-
-            const delay =
-                Math.random() * 1.2;
 
             point.style.setProperty(
                 "--delay",
-                `${delay}s`
+                `${Math.random() * 0.7}s`
             );
 
 
@@ -197,7 +137,6 @@ function createPoints() {
         });
 
     });
-
 }
 
 
@@ -208,15 +147,13 @@ ABRIR / CERRAR
 */
 
 function toggleAnimation() {
-
     animation.classList.toggle("active");
-
 }
 
 
 /*
 ==================================================
-BOTÓN
+BOTÓN 8
 ==================================================
 */
 
@@ -242,9 +179,7 @@ document.addEventListener(
         ) {
 
             if (!event.repeat) {
-
                 toggleAnimation();
-
             }
 
         }
