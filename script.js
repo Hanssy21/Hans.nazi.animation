@@ -1,139 +1,245 @@
-const button8 = document.getElementById("button8");
-const animationContainer = document.getElementById("animationContainer");
-const pixelArt = document.getElementById("pixelArt");
+const button8 =
+    document.getElementById("button8");
+
+const animation =
+    document.getElementById("animation");
+
+const points =
+    document.getElementById("points");
 
 
-// ========================================
-// TU DIBUJO
-// ========================================
+// ============================================
+// MATRIZ DEL SÍMBOLO
+// ============================================
 //
-// R = 🔴 rojo
-// W = ⚪ blanco
-// B = ⚫ negro
+// R = 🔴
+// W = ⚪
+// B = ⚫
 //
-// 13 columnas x 15 filas
+// 19 columnas x 11 filas
 //
 
 const pattern = [
-    "RRRWWW BWWWRRR".replace(/ /g, ""),
-    "RRRWWW BBBWWWRR".replace(/ /g, ""),
-    "RWWWBBBBBWWWWR",
-    "WWWBBBBBWWWBWW",
-    "WWBBBWWWBBBBWW",
-    "WWWBBBWBWBBBBW",
-    "BWWWBBBBBWB BBB".replace(/ /g, ""),
-    "BBWWWBBBWWWBBB",
-    "BBBWB BBBBWWWBB".replace(/ /g, ""),
-    "WBBBBBBWBWWWBB",
-    "WWBBBWWWBBBWWW",
-    "WWWBWWWBBBWWW",
-    "RWWWWW BBBWWWR".replace(/ /g, ""),
-    "RRWWW BBBWWWRR".replace(/ /g, ""),
-    "RRRWWW BWWWRRR".replace(/ /g, "")
+
+    "RRRRRRRRRRRRRRRRRRR",
+
+    "RRRRRWWWWWWWRRRRRRR",
+
+    "RRRRWWWWWWWWWRRRRRR",
+
+    "RRRRWWBWWBWWWRRRRRR",
+
+    "RRRRWWWWBWWWWRRRRRR",
+
+    "RRRRWWBWBWBWWRRRRRR",
+
+    "RRRRWWWWBWWWWRRRRRR",
+
+    "RRRRWWBWWBWWWRRRRRR",
+
+    "RRRRWWWWWWWWWRRRRRR",
+
+    "RRRRRWWWWWWWRRRRRRR",
+
+    "RRRRRRRRRRRRRRRRRRR"
+
 ];
 
 
-// ========================================
-// CORREGIR EL DIBUJO
-// ========================================
+// ============================================
+// CREAR PUNTOS
+// ============================================
 
-const cleanPattern = pattern.map(row => {
+function createPoints() {
 
-    // Elimina espacios
-    row = row.replace(/\s/g, "");
-
-    // Si por alguna razón tiene más de 13,
-    // nos quedamos con las primeras 13
-    return row.substring(0, 13);
-});
+    points.innerHTML = "";
 
 
-// ========================================
-// CREAR PIXEL ART
-// ========================================
+    pattern.forEach((row, y) => {
 
-function createPixelArt() {
+        [...row].forEach((color, x) => {
 
-    pixelArt.innerHTML = "";
+            const point =
+                document.createElement("div");
 
-    cleanPattern.forEach(row => {
 
-        for (let i = 0; i < 13; i++) {
+            point.classList.add(
+                "point"
+            );
 
-            const pixel = document.createElement("div");
 
-            pixel.classList.add("pixel");
-
-            const color = row[i];
+            // ================================
+            // COLOR
+            // ================================
 
             if (color === "R") {
-                pixel.classList.add("red");
+
+                point.classList.add(
+                    "red"
+                );
+
             }
 
             else if (color === "W") {
-                pixel.classList.add("white");
+
+                point.classList.add(
+                    "white"
+                );
+
             }
 
             else if (color === "B") {
-                pixel.classList.add("black");
+
+                point.classList.add(
+                    "black"
+                );
+
             }
 
-            pixelArt.appendChild(pixel);
-        }
+
+            // ================================
+            // DIRECCIÓN DE EXPLOSIÓN
+            // ================================
+
+            const centerX = 9;
+            const centerY = 5;
+
+
+            let dx = x - centerX;
+            let dy = y - centerY;
+
+
+            // Normalizar dirección
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            if (distance > 0) {
+
+                dx =
+                    (dx / distance) *
+                    150;
+
+                dy =
+                    (dy / distance) *
+                    150;
+
+            }
+
+
+            // Un poco de aleatoriedad
+
+            dx +=
+                (Math.random() - .5) * 70;
+
+            dy +=
+                (Math.random() - .5) * 70;
+
+
+            point.style.setProperty(
+                "--x",
+                `${dx}px`
+            );
+
+
+            point.style.setProperty(
+                "--y",
+                `${dy}px`
+            );
+
+
+            // Cada punto empieza en
+            // un momento ligeramente distinto
+
+            const delay =
+                Math.random() * 1.2;
+
+
+            point.style.setProperty(
+                "--delay",
+                `${delay}s`
+            );
+
+
+            points.appendChild(point);
+
+        });
+
     });
+
 }
 
 
-// ========================================
-// ABRIR / CERRAR ANIMACIÓN
-// ========================================
+// ============================================
+// ABRIR / CERRAR
+// ============================================
 
 function toggleAnimation() {
 
-    if (animationContainer.classList.contains("active")) {
+    if (
+        animation.classList.contains(
+            "active"
+        )
+    ) {
 
-        // Cerrar
-        animationContainer.classList.remove("active");
+        animation.classList.remove(
+            "active"
+        );
 
-    } else {
-
-        // Abrir
-        animationContainer.classList.add("active");
     }
+
+    else {
+
+        animation.classList.add(
+            "active"
+        );
+
+    }
+
 }
 
 
-// ========================================
+// ============================================
 // BOTÓN 8
-// ========================================
+// ============================================
 
-button8.addEventListener("click", () => {
-    toggleAnimation();
-});
+button8.addEventListener(
+    "click",
+    toggleAnimation
+);
 
 
-// ========================================
-// TECLA 8
-// ========================================
+// ============================================
+// TECLADO
+// ============================================
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener(
+    "keydown",
+    (event) => {
 
-    if (
-        event.key === "8" ||
-        event.code === "Numpad8"
-    ) {
+        if (
+            event.key === "8" ||
+            event.code === "Numpad8"
+        ) {
 
-        // Evita que se repita si mantienes
-        // la tecla presionada
-        if (!event.repeat) {
-            toggleAnimation();
+            if (!event.repeat) {
+
+                toggleAnimation();
+
+            }
+
         }
+
     }
-});
+);
 
 
-// ========================================
-// CREAR DIBUJO AL INICIAR
-// ========================================
+// ============================================
+// CREAR AL CARGAR
+// ============================================
 
-createPixelArt();
+createPoints();
